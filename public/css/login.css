@@ -1,0 +1,272 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:wght@300;400;600;700&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    justify-content: center;  /* Centers horizontally */
+    align-items: center; 
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    font-family: 'Open Sans', sans-serif;
+    background: linear-gradient(135deg, #092756, #670d10);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;  /* Remove default spacing */
+    padding: 0;
+}
+
+/* Header Section */
+.header {
+    position: absolute;
+    top: 15px;
+    right: 40px;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Icons Styling */
+.header i {
+    font-size: 24px;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.header i:hover {
+    color: #ffcc00;
+    transform: scale(1.2);
+}
+
+/* Login Box */
+.login-container {
+    width: 380px;
+    padding: 50px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    transition: 0.3s ease-in-out;
+    text-align: left; 
+}
+
+
+/* LOGIN Title - Right Aligned & Styled */
+.login-container h2 {
+    color: #ffcc00;
+    font-size: 34px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    text-align: center;
+    margin-bottom: 25px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+/* Input Fields */
+input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    background: rgba(255, 255, 255, 0.25);
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 6px;
+    transition: 0.3s ease;
+    box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.2);
+}
+
+input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+input:focus {
+    background: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Login Button */
+/* Login Button */
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: bold;
+    background: linear-gradient(90deg, #030359, #ff6600);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    text-transform: uppercase;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(90deg, #ff6600, #ffcc00);
+    box-shadow: 0 5px 15px rgba(255, 204, 0, 0.6);
+    transform: translateY(-2px);
+}
+
+/* Forgot Password - Now Properly Positioned */
+.forgot-password {
+    display: block;
+    margin-top: 10px; /* Space below login button */
+    font-size: 14px;
+    color: #ffcc00;
+    text-decoration: none;
+    transition: 0.3s ease;
+    text-align: center;
+}
+
+.forgot-password:hover {
+    color: #ffffff;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+}
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+}
+
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.login-container {
+    animation: fadeIn 0.6s ease-in-out;
+}.nav-link i {
+    margin-right: 5px;
+    font-size: 18px;
+}
+.navbar-nav .nav-link {
+    color: #0e0c0108 !important;  /* Change font color (gold) */
+    font-weight: bold;
+    font-size: 16px;
+    position: relative;
+    padding: 5px 10px;
+}
+
+.navbar-nav .nav-link i {
+    position: absolute;
+    top: -10px; /* Move icon upwards */
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 20px;
+    color: #fff; /* White color for icons */
+}
+
+.navbar-brand {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff !important;
+}
+.navbar-nav .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 15px; /* Adds spacing between items */
+}
+
+.navbar-nav .nav-link {
+    color: #ffd9000c !important;  /* Gold color */
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    padding-top: 25px; /* Ensures spacing between icon & text */
+    position: relative;
+}
+
+.navbar-nav .nav-link i {
+    font-size: 22px; /* Icon size */
+    color: #fff; /* White color for icons */
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+/* Navbar Font & Background */
+.navbar {
+    background-color: #0d192702 !important; /* Primary Blue */
+}
+
+.navbar-nav .nav-link {
+    color: #ffffff !important; /* White text */
+    font-weight: bold;
+    font-size: 16px;
+    text-transform: uppercase;
+}/* Login Form Container */
+.card {
+    background-color: rgba(0, 0, 0, 0.8); /* Dark background with transparency */
+    border-radius: 12px;
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3); /* Soft shadow */
+    padding: 25px;
+}
+
+/* Login Form Title */
+h4 {
+    font-size: 32px; /* Bigger font */
+    font-weight: bold;
+    color: #ffffff; /* White text */
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+/* Form Labels */
+.card-body label {
+    font-size: 20px; /* Bigger labels */
+    font-weight: bold;
+    color: #ffffff; /* White color */
+}
+
+/* Form Input Fields */
+.card-body input {
+    font-size: 18px; /* Bigger input text */
+    border-radius: 8px;
+    border: 2px solid #ffffff; /* White border */
+    background-color: transparent;
+    color: #ffffff;
+
+}
+/* Move Icons to the Top-Right Corner */
+.navbar-nav {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    display: flex;
+    gap: 20px;
+}
+
+.navbar-nav .nav-item {
+    position: relative;
+}
+
+/* Style the Icons */
+.navbar-nav .nav-link i {
+    font-size: 20px;
+    color: #ffd700; /* Gold */
+    transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover i {
+    color: #fff; /* Change to white on hover */
+}
