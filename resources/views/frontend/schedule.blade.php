@@ -76,7 +76,7 @@
                             @endif
 
                             @if($lecture->is_demo)
-                                <span class="badge bg-success bg-opacity-10 text-success small">Open Demo</span>
+                                <span class="badge bg-success bg-opacity-10 text-success small">Free Preview</span>
                             @endif
                         </div>
 

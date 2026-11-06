@@ -90,12 +90,12 @@
                         <div class="tab-pane fade show active" id="sub-tab-card">
                             <div class="mb-3">
                                 <label class="text-muted small mb-1">Cardholder Name:</label>
-                                <input type="text" class="form-control" value="{{ Auth::user()->name }}" required>
+                                <input type="text" name="card_name" class="form-control" value="{{ Auth::user()->name }}" required>
                             </div>
                             <div class="mb-3">
                                 <label class="text-muted small mb-1">Card Number:</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="•••• •••• •••• 4242" value="4242 •••• •••• 4242" required>
+                                    <input type="text" name="card_number" class="form-control" placeholder="•••• •••• •••• ••••" maxlength="19" autocomplete="cc-number">
                                     <span class="input-group-text bg-secondary bg-opacity-25 border-0">
                                         <i class="fab fa-cc-visa text-primary me-1"></i>
                                         <i class="fab fa-cc-mastercard text-danger"></i>
@@ -105,11 +105,11 @@
                             <div class="row g-3">
                                 <div class="col-6">
                                     <label class="text-muted small mb-1">Expires (MM/YY):</label>
-                                    <input type="text" class="form-control" placeholder="12/28" value="12/28" required>
+                                    <input type="text" name="card_expiry" class="form-control" placeholder="MM/YY" maxlength="5" autocomplete="cc-exp">
                                 </div>
                                 <div class="col-6">
                                     <label class="text-muted small mb-1">CVC / CVV:</label>
-                                    <input type="password" class="form-control" placeholder="•••" value="888" maxlength="4" required>
+                                    <input type="password" name="card_cvc" class="form-control" placeholder="CVC" maxlength="4" autocomplete="cc-csc">
                                 </div>
                             </div>
                         </div>
@@ -121,10 +121,10 @@
                                 <h6 class="fw-bold mb-1">UPI Auto-Debit & Recurring Subscription</h6>
                                 <p class="text-muted small mb-3">Scan with Google Pay, PhonePe, Paytm, or enter UPI VPA.</p>
                                 <div class="d-inline-block p-2 bg-white rounded shadow-sm mb-3">
-                                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=digitalacademy@upi&pn=DigitalAcademy&am={{ $price }}&cu=INR" alt="UPI QR" style="width: 140px; height: 140px;">
+                                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=billing@digitalacademy.com&pn=DigitalAcademy&am={{ $price }}&cu=INR" alt="UPI QR" style="width: 140px; height: 140px;">
                                 </div>
                                 <div>
-                                    <input type="text" class="form-control text-center mx-auto" style="max-width: 320px;" placeholder="username@okhdfcbank" value="student@okhdfcbank">
+                                    <input type="text" name="upi_id" class="form-control text-center mx-auto" style="max-width: 320px;" placeholder="username@bank (e.g. user@oksbi)">
                                 </div>
                             </div>
                         </div>
@@ -155,17 +155,6 @@
                         <i class="fas fa-bolt me-2"></i> Activate {{ ucfirst($tier) }} Membership (<span id="subBtnAmount" data-price-usd="{{ $price }}">${{ number_format($price, 2) }}</span>)
                     </button>
                 </form>
-
-                <div class="text-center mt-3 text-muted small" style="font-size: 0.75rem;">
-                    By activating, you agree to recurring renewal. Cancel anytime with 1-click in your account.
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-</div>
-@endsection
 
                 <div class="text-center mt-3 text-muted small" style="font-size: 0.75rem;">
                     By activating, you agree to recurring renewal. Cancel anytime with 1-click in your account.

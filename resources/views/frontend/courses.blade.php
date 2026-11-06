@@ -61,9 +61,9 @@
                             <span class="edu-bestseller-badge">🔥 Bestseller</span>
                         @endif
 
-                        <!-- Watch Demo Class Trigger -->
+                        <!-- Watch Preview Trigger -->
                         <button type="button" class="edu-play-preview-btn" onclick="openDemoModal('{{ addslashes($course->name) }}', '{{ $course->demo_video_url }}', '{{ route('courses.checkout', $course->id) }}')">
-                            <i class="fas fa-play fa-2xs"></i> Free Demo
+                            <i class="fas fa-play fa-2xs"></i> Preview
                         </button>
                     </div>
 

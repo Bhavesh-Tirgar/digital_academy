@@ -58,19 +58,6 @@
                         <p class="text-muted small">Sign in to resume your lectures, tasks, and cohorts</p>
                     </div>
 
-                    <!-- Quick Demo Credentials Auto-Fill Pill for Testing -->
-                    <div class="dropdown text-center mb-4">
-                        <button class="btn btn-edu-secondary btn-sm dropdown-toggle text-info border-info border-opacity-25" type="button" data-bs-toggle="dropdown" style="font-size: 0.78rem;">
-                            <i class="fas fa-bolt text-warning me-1"></i> Quick Demo Logins
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end shadow" style="background: var(--dropdown-bg); border: 1px solid var(--border-color); font-size: 0.85rem;">
-                            <li><h6 class="dropdown-header text-muted">Click to auto-fill credentials:</h6></li>
-                            <li><button type="button" class="dropdown-item py-2" onclick="fillLogin('student@test.com', 'password')">🎓 Student: student@test.com</button></li>
-                            <li><button type="button" class="dropdown-item py-2" onclick="fillLogin('sarah.jenkins@digitalacademy.com', 'password')">👨‍🏫 Instructor: sarah.jenkins@digitalacademy.com</button></li>
-                            <li><button type="button" class="dropdown-item py-2" onclick="fillLogin('digitalacademy@gmail.com', 'password')">🛡️ Admin: digitalacademy@gmail.com</button></li>
-                        </ul>
-                    </div>
-
                     <!-- Login Form -->
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
@@ -146,11 +133,6 @@
             input.type = 'password';
             icon.className = 'fas fa-eye';
         }
-    }
-
-    function fillLogin(email, password) {
-        document.getElementById('email').value = email;
-        document.getElementById('password').value = password;
     }
 </script>
 @endsection

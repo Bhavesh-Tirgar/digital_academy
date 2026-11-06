@@ -372,8 +372,8 @@
             <div class="modal-content shadow-lg" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); overflow: hidden;">
                 <div class="modal-header border-bottom border-secondary border-opacity-15 py-3">
                     <div class="d-flex align-items-center gap-2">
-                        <span class="badge bg-primary bg-opacity-20 text-primary small"><i class="fas fa-play-circle me-1"></i> Interactive Demo</span>
-                        <h5 class="modal-title fw-bold fs-6 mb-0 text-truncate" id="demoModalTitle" style="max-width: 500px;">Course Demo Lesson</h5>
+                        <span class="badge bg-primary bg-opacity-20 text-primary small"><i class="fas fa-play-circle me-1"></i> Public Preview</span>
+                        <h5 class="modal-title fw-bold fs-6 mb-0 text-truncate" id="demoModalTitle" style="max-width: 500px;">Course Preview</h5>
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="stopDemoVideo()"></button>
                 </div>
@@ -405,7 +405,7 @@
             var modalEl = document.getElementById('demoVideoModal');
             if (!modalEl) return;
             var titleEl = document.getElementById('demoModalTitle');
-            if (titleEl) titleEl.textContent = title || 'Course Demo Lesson';
+            if (titleEl) titleEl.textContent = title || 'Course Preview';
 
             var enrollBtn = document.getElementById('demoModalEnrollBtn');
             if (enrollBtn && checkoutUrl) enrollBtn.href = checkoutUrl;

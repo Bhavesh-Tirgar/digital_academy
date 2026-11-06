@@ -38,12 +38,12 @@ class EnrollmentController extends Controller
         }
 
         $plan = $request->query('plan', 'All-Access');
-        $price = $course->price > 0 ? $course->price : 49.00;
+        $price = (float) ($course->price ?? 0);
 
         // Platform fee breakdown: 20% platform fee, 80% instructor share
         $platformFeePercent = 20;
-        $platformFee = round($price * ($platformFeePercent / 100), 2);
-        $instructorShare = round($price - $platformFee, 2);
+        $platformFee = $price > 0 ? round($price * ($platformFeePercent / 100), 2) : 0.00;
+        $instructorShare = $price > 0 ? round($price - $platformFee, 2) : 0.00;
 
         return view('frontend.checkout', compact('course', 'plan', 'price', 'platformFee', 'instructorShare'));
     }
@@ -60,15 +60,16 @@ class EnrollmentController extends Controller
         $course = Course::findOrFail($id);
         $user = Auth::user();
 
-        $plan = $request->input('plan', 'Premium');
-        $amountPaid = $course->price > 0 ? $course->price : 49.00;
-        $paymentMethod = $request->input('payment_method', 'card');
+        $plan = $request->input('plan', 'Direct Enrollment');
+        $amountPaid = (float) ($course->price ?? 0);
+        $paymentMethod = $amountPaid <= 0 ? 'free' : $request->input('payment_method', 'card');
         $currency = $request->input('currency', 'USD');
 
         // Process charge through Payment Gateway Service
         $charge = PaymentGatewayService::processCharge($paymentMethod, $amountPaid, $currency, [
             'user_id' => $user->id,
             'course_id' => $course->id,
+            'razorpay_payment_id' => $request->input('razorpay_payment_id'),
         ]);
 
         if (!$charge['success']) {
@@ -76,8 +77,8 @@ class EnrollmentController extends Controller
         }
 
         // 20% platform commission fee, 80% instructor net earning
-        $platformFee = round($amountPaid * 0.20, 2);
-        $instructorEarning = round($amountPaid - $platformFee, 2);
+        $platformFee = $amountPaid > 0 ? round($amountPaid * 0.20, 2) : 0.00;
+        $instructorEarning = $amountPaid > 0 ? round($amountPaid - $platformFee, 2) : 0.00;
 
         // Anti-Fraud Escrow Rule:
         // If course curriculum is already 100% verified & completed by teacher, funds are released directly.

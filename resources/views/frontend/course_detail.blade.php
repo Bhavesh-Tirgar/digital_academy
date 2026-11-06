@@ -32,7 +32,7 @@
                 <span class="fw-bold small" style="color: var(--primary);">{{ number_format($course->enrolled_count) }} Students Currently Enrolled</span>
             </div>
 
-            <!-- Demo Video Teaser Box -->
+            <!-- Course Preview Video -->
             <div class="edu-card-panel p-0 overflow-hidden mb-5 position-relative shadow-sm" style="border-radius: var(--radius-lg);">
                 <div class="position-relative" style="height: 380px;">
                     <img src="{{ $course->thumbnail ?? 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800' }}" alt="{{ $course->name }}" class="w-100 h-100" style="object-fit: cover;">
@@ -40,7 +40,7 @@
                         <button type="button" class="btn-edu-primary rounded-circle p-0 shadow-lg mb-2" onclick="openDemoModal('{{ addslashes($course->name) }}', '{{ $course->demo_video_url }}', '{{ route('courses.checkout', $course->id) }}')" style="width: 72px; height: 72px; font-size: 1.5rem;">
                             <i class="fas fa-play ms-1"></i>
                         </button>
-                        <div class="text-white fw-bold small">Watch Free Interactive Demo Lesson</div>
+                        <div class="text-white fw-bold small">Watch Course Preview</div>
                     </div>
                 </div>
             </div>
@@ -396,7 +396,7 @@
                 @endif
 
                 <button type="button" class="btn-edu-secondary w-100 justify-content-center mb-4" onclick="openDemoModal('{{ addslashes($course->name) }}', '{{ $course->demo_video_url }}', '{{ route('courses.checkout', $course->id) }}')">
-                    <i class="fas fa-play me-2"></i> Watch Free Demo Lesson
+                    <i class="fas fa-play me-2"></i> Watch Course Preview
                 </button>
 
                 <div class="border-top pt-3" style="border-color: var(--border-color) !important;">

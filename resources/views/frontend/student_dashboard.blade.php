@@ -288,7 +288,7 @@
                                     <i class="far fa-clock me-1"></i> {{ $lecture->start_time ? $lecture->start_time->format('h:i A, M d') : 'Scheduled' }}
                                 </span>
                                 @if($lecture->is_demo)
-                                    <span class="badge bg-danger bg-opacity-10 text-danger small">Free Demo</span>
+                                    <span class="badge bg-info bg-opacity-10 text-info small">Open Preview</span>
                                 @endif
                             </div>
 

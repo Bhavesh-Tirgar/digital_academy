@@ -321,7 +321,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="text-muted small fw-semibold mb-1">Demo Video URL (Sample Class):</label>
+                        <label class="text-muted small fw-semibold mb-1">Course Preview Video URL (Sample Lesson):</label>
                         <input type="url" name="demo_video_url" class="form-control" placeholder="https://... (mp4 or streaming URL)">
                     </div>
 
@@ -397,7 +397,7 @@
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="is_demo" value="1" id="isDemoCheck">
                         <label class="form-check-label text-muted small" for="isDemoCheck">
-                            Mark as Free Demo (Accessible to guest learners without enrollment)
+                            Mark as Public Preview (Accessible to guest learners without enrollment)
                         </label>
                     </div>
                 </div>
