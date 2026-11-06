@@ -90,13 +90,14 @@ class CourseController extends Controller
     // Show upload material form
     public function uploadMaterial($id, $plan = null)
     {
-        $course = Course::findOrFail($id);
+        $course = Course::with('instructor')->findOrFail($id);
         $user = \Illuminate\Support\Facades\Auth::user();
         if ($user && !$user->isAdmin() && $user->id !== $course->instructor_id) {
             return redirect()->route('instructor.dashboard')->with('error', 'Unauthorized access to this course syllabus.');
         }
-        $subjects = Subject::where('course_id', $id)->get();
-        return view('backend.courses.uploadMaterial', compact('course', 'plan', 'subjects'));
+        $subjects = Subject::where('course_id', $id)->with('materials')->get();
+        $allMaterials = Material::whereIn('subject_id', $subjects->pluck('id'))->with('subject')->latest()->get();
+        return view('backend.courses.uploadMaterial', compact('course', 'plan', 'subjects', 'allMaterials'));
     }
 
     // Store uploaded materials
@@ -110,42 +111,84 @@ class CourseController extends Controller
 
         $request->validate([
             'subject_id' => 'required|exists:subjects,id',
-            'video.*' => 'mimes:mp4,mov,avi|max:50000',
-            'pdf.*' => 'mimes:pdf|max:10000',
-            'handwritten_notes.*' => 'mimes:jpg,jpeg,png,pdf|max:10000',
+            'video_url' => 'nullable|url',
+            'video_title' => 'nullable|string|max:255',
+            'pdf_title' => 'nullable|string|max:255',
+            'handwritten_title' => 'nullable|string|max:255',
+            'video.*' => 'nullable|mimes:mp4,mov,avi,webm,mkv|max:100000',
+            'pdf.*' => 'nullable|mimes:pdf|max:20000',
+            'handwritten_notes.*' => 'nullable|mimes:jpg,jpeg,png,webp,pdf|max:20000',
         ]);
 
-        $this->uploadFiles($request, 'video', 'materials/videos', $id);
-        $this->uploadFiles($request, 'pdf', 'materials/pdfs', $id);
-        $this->uploadFiles($request, 'handwritten_notes', 'materials/notes', $id);
+        $uploadedCount = 0;
 
-        return redirect()->back()->with('success', 'Materials uploaded successfully.');
+        // 1. Process Video URL / Stream Embed (YouTube, Vimeo, Cloudflare, S3)
+        if ($request->filled('video_url')) {
+            $durationSeconds = $request->filled('duration_minutes') ? ((int) $request->input('duration_minutes') * 60) : null;
+            Material::create([
+                'subject_id' => $request->subject_id,
+                'title' => $request->input('video_title') ?: 'Video Lesson',
+                'video_url' => $request->input('video_url'),
+                'file_path' => null,
+                'type' => 'video',
+                'duration_seconds' => $durationSeconds,
+                'transcript' => $request->input('transcript'),
+                'plan_level' => 'General',
+            ]);
+            $uploadedCount++;
+        }
+
+        // 2. Process Video Files
+        if ($request->hasFile('video')) {
+            $uploadedCount += $this->uploadFiles($request, 'video', 'materials/videos', $id);
+        }
+
+        // 3. Process PDF Files
+        if ($request->hasFile('pdf')) {
+            $uploadedCount += $this->uploadFiles($request, 'pdf', 'materials/pdfs', $id);
+        }
+
+        // 4. Process Notes / Worksheets
+        if ($request->hasFile('handwritten_notes')) {
+            $uploadedCount += $this->uploadFiles($request, 'handwritten_notes', 'materials/notes', $id);
+        }
+
+        if ($uploadedCount === 0) {
+            return redirect()->back()->with('error', 'Please provide a video URL or select at least one file to upload.');
+        }
+
+        return redirect()->back()->with('success', "{$uploadedCount} curriculum material(s) added successfully.");
     }
 
     // Helper function to upload files
     private function uploadFiles($request, $type, $path, $courseId)
     {
+        $count = 0;
         if ($request->hasFile($type)) {
-            // Map input field name to MySQL enum ('handwritten_notes' -> 'handwritten')
             $dbType = ($type === 'handwritten_notes') ? 'handwritten' : $type;
             
-            // Map title input name
             $titleInput = ($type === 'handwritten_notes')
-                ? ($request->input('handwritten_title') ?? $request->input('handwritten_notes_title', 'Untitled'))
-                : $request->input($type . '_title', 'Untitled');
+                ? ($request->input('handwritten_title') ?: 'Lecture Worksheet')
+                : ($request->input($type . '_title') ?: ucfirst($type) . ' Material');
 
             foreach ($request->file($type) as $file) {
                 $filePath = $file->store($path, 'public');
+                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $finalTitle = !empty($titleInput) && $titleInput !== 'Untitled' ? $titleInput : $originalName;
 
                 Material::create([
                     'subject_id' => $request->subject_id,
-                    'title' => $titleInput,
+                    'title' => $finalTitle,
                     'file_path' => $filePath,
                     'type' => $dbType,
+                    'duration_seconds' => $type === 'video' && $request->filled('duration_minutes') ? ((int) $request->input('duration_minutes') * 60) : null,
+                    'transcript' => $type === 'video' ? $request->input('transcript') : null,
                     'plan_level' => 'General',
                 ]);
+                $count++;
             }
         }
+        return $count;
     }
 
     // Add Subject

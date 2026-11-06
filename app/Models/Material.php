@@ -8,7 +8,16 @@ class Material extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['subject_id', 'title', 'type', 'file_path', 'plan_level'];
+    protected $fillable = [
+        'subject_id',
+        'title',
+        'type',
+        'file_path',
+        'video_url',
+        'duration_seconds',
+        'transcript',
+        'plan_level',
+    ];
 
     public function subject()
     {

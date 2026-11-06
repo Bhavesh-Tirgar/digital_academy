@@ -146,8 +146,12 @@
 
                                 <div class="edu-card-footer flex-column gap-2 pt-3">
                                     <div class="d-flex gap-2 w-100">
-                                        <a href="{{ route('courses.detail', $course->id) }}" class="btn-edu-secondary btn-sm flex-grow-1 text-center">Preview</a>
-                                        <a href="{{ route('courses.uploadMaterial', ['id' => $course->id]) }}" class="btn-edu-primary btn-sm flex-grow-1 text-center">Add Material</a>
+                                        <a href="{{ route('courses.detail', $course->id) }}" class="btn-edu-secondary btn-sm flex-grow-1 text-center">
+                                            <i class="fas fa-eye me-1"></i> Preview
+                                        </a>
+                                        <a href="{{ route('courses.uploadMaterial', ['id' => $course->id]) }}" class="btn-edu-primary btn-sm flex-grow-1 text-center">
+                                            <i class="fas fa-cloud-upload-alt me-1"></i> Add Material
+                                        </a>
                                     </div>
 
                                     @if(!$course->is_completed)

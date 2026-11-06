@@ -90,24 +90,40 @@
                 <div class="position-relative" style="min-height: 420px; background: #0b0f19; display: flex; align-items: center; justify-content: center;">
                     @if($activeMaterial && $activeMaterial->type === 'video')
                         @php
-                            $videoSrc = Str::startsWith($activeMaterial->file_path, ['http://', 'https://']) 
-                                ? $activeMaterial->file_path 
-                                : asset('storage/' . $activeMaterial->file_path);
+                            $rawUrl = $activeMaterial->video_url ?: $activeMaterial->file_path;
+                            $isDirectUrl = Str::startsWith($rawUrl, ['http://', 'https://']);
+                            $videoSrc = $isDirectUrl ? $rawUrl : asset('storage/' . $rawUrl);
+                            $isYoutube = Str::contains($videoSrc, ['youtube.com', 'youtu.be']);
+                            $isVimeo = Str::contains($videoSrc, 'vimeo.com');
+                            $embedUrl = $videoSrc;
+                            if ($isYoutube) {
+                                if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/', $videoSrc, $m)) {
+                                    $embedUrl = 'https://www.youtube-nocookie.com/embed/' . $m[1] . '?autoplay=1&rel=0';
+                                }
+                            } elseif ($isVimeo) {
+                                if (preg_match('/vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)/', $videoSrc, $m)) {
+                                    $embedUrl = 'https://player.vimeo.com/video/' . $m[3] . '?autoplay=1';
+                                }
+                            }
                         @endphp
-                        <video id="workspaceVideoPlayer" controls playsinline class="w-100" style="max-height: 480px; background: #000;" poster="{{ $course->thumbnail ?? 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1000' }}">
-                            <source src="{{ $videoSrc }}" type="video/mp4">
-                            Your browser does not support HTML5 video streaming.
-                        </video>
+                        @if($isYoutube || $isVimeo)
+                            <iframe src="{{ $embedUrl }}" class="w-100" style="height: 480px; border: 0;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        @else
+                            <video id="workspaceVideoPlayer" controls playsinline class="w-100" style="max-height: 480px; background: #000;" poster="{{ $course->thumbnail ?? 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1000' }}">
+                                <source src="{{ $videoSrc }}" type="video/mp4">
+                                Your browser does not support HTML5 video streaming.
+                            </video>
 
-                        <!-- Video Player Floating Speed Control Bar -->
-                        <div class="position-absolute bottom-0 end-0 m-3 d-flex align-items-center gap-1 z-3" style="background: rgba(15, 23, 42, 0.85); padding: 4px 8px; border-radius: 999px;">
-                            <span class="text-muted small me-1" style="font-size: 0.7rem; color: #cbd5e1 !important;">Speed:</span>
-                            <button type="button" class="playback-speed-btn" onclick="setPlayerSpeed(0.75)">0.75x</button>
-                            <button type="button" class="playback-speed-btn active" id="spd1" onclick="setPlayerSpeed(1.0)">1.0x</button>
-                            <button type="button" class="playback-speed-btn" onclick="setPlayerSpeed(1.25)">1.25x</button>
-                            <button type="button" class="playback-speed-btn" onclick="setPlayerSpeed(1.5)">1.5x</button>
-                            <button type="button" class="playback-speed-btn" onclick="setPlayerSpeed(2.0)">2.0x</button>
-                        </div>
+                            <!-- Video Player Floating Speed Control Bar -->
+                            <div class="position-absolute bottom-0 end-0 m-3 d-flex align-items-center gap-1 z-3" style="background: rgba(15, 23, 42, 0.85); padding: 4px 8px; border-radius: 999px;">
+                                <span class="text-muted small me-1" style="font-size: 0.7rem; color: #cbd5e1 !important;">Speed:</span>
+                                <button type="button" class="playback-speed-btn" onclick="setPlayerSpeed(0.75)">0.75x</button>
+                                <button type="button" class="playback-speed-btn active" id="spd1" onclick="setPlayerSpeed(1.0)">1.0x</button>
+                                <button type="button" class="playback-speed-btn" onclick="setPlayerSpeed(1.25)">1.25x</button>
+                                <button type="button" class="playback-speed-btn" onclick="setPlayerSpeed(1.5)">1.5x</button>
+                                <button type="button" class="playback-speed-btn" onclick="setPlayerSpeed(2.0)">2.0x</button>
+                            </div>
+                        @endif
                     @elseif($activeMaterial && $activeMaterial->type === 'pdf')
                         @php
                             $pdfSrc = Str::startsWith($activeMaterial->file_path, ['http://', 'https://']) 
