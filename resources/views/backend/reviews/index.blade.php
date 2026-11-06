@@ -1,9 +1,8 @@
 @extends('backend.master')
-@section('title', 'Digital Academy')
-@extends('layouts.admin')
+@section('title', 'User Reviews - Digital Academy')
 @section('content')
-<div class="container">
-    <h2 class="mb-4">User Reviews</h2>
+<div class="container-fluid">
+    <h2 class="mb-4 text-white">User Reviews</h2>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -30,16 +29,19 @@
                     @forelse($reviews as $key => $review)
                         <tr>
                             <td>{{ $key + 1 }}</td>
-                            <td>{{ $review->user->name ?? 'N/A' }}</td>
-                            <td>{{ $review->course->title ?? 'N/A' }}</td>
+                            <td>{{ optional($review->user)->name ?? 'Anonymous' }}</td>
+                            <td>{{ optional($review->course)->name ?? 'General' }}</td>
                             <td>{{ $review->rating }} ⭐</td>
-                            <td>{{ $review->comment }}</td>
+                            <td>{{ $review->review }}</td>
                             <td>
-                                <form action="{{ route('admin.reviews.destroy', $review->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this review?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                </form>
+                                <div class="d-flex gap-1">
+                                    <a href="{{ route('admin.reviews.edit', $review->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                                    <form action="{{ route('admin.reviews.destroy', $review->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this review?');" class="m-0">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @empty

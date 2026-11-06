@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
+require_once __DIR__ . '/AcademyFeatureSeeder.php';
+
 class DatabaseSeeder extends Seeder
 {
     public function run()
@@ -13,7 +15,7 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             CourseSeeder::class,
             SubjectSeeder::class,
-         // Optional
+            AcademyFeatureSeeder::class,
         ]);
     }
 }

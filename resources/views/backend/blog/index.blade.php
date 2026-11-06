@@ -1,6 +1,5 @@
 @extends('backend.master')
 @section('title', 'Digital Academy')
-@extends('layouts.admin')
 @section('content')
 <div class="row">
     <div class="col-md-12">

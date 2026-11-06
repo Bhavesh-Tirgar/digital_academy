@@ -1,218 +1,107 @@
-@extends('layouts.app')
+@extends('frontend.master')
+
+@section('title', 'Curriculum Modules & Subject Tracks – Digital Academy')
 
 @section('content')
-<style>
-    /* Container Styling */
-    .container {
-        padding: 0 20px 40px; /* Reduced top padding, kept bottom */
-        background: #0f0f14;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        position: relative;
-        overflow: hidden;
-    }
+<div class="container py-4 py-md-5">
 
-    /* Header Wrapper for Better Title Positioning */
-    .header-wrapper {
-        width: 100%;
-        max-width: 1100px;
-        padding: 40px 0 20px; /* Top padding here, reduced bottom */
-        display: flex;
-        justify-content: center;
-        position: relative;
-        z-index: 1;
-    }
+    <!-- Header Section -->
+    <div class="text-center mx-auto mb-5" style="max-width: 680px;">
+        <span class="edu-hero-tag mb-2">
+            <i class="fas fa-layer-group"></i> Academic Structure
+        </span>
+        <h1 class="edu-section-title mb-2">Curriculum Modules & Learning Tracks</h1>
+        <p class="edu-section-sub mb-4">
+            Structured modules across all cohort courses, complete with high-definition video lessons, architecture whitepapers, and downloadable handwritten notes.
+        </p>
 
-    h2.text-center {
-        font-size: 2.25rem;
-        font-weight: 800;
-        color: #e5e7eb;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        text-shadow: 0 0 6px rgba(94, 92, 230, 0.2);
-        margin: 0;
-        padding: 10px 20px;
-        background: rgba(28, 28, 36, 0.8); /* Subtle card-like background */
-        border-radius: 8px;
-        border: 1px solid #2a2a33;
-    }
-
-    /* Subtle Background Detail */
-    .container::before {
-        content: '';
-        position: absolute;
-        top: -20%;
-        left: -20%;
-        width: 140%;
-        height: 140%;
-        background: radial-gradient(circle at 50% 50%, rgba(94, 92, 230, 0.08), transparent 60%);
-        opacity: 0.7;
-        z-index: 0;
-    }
-
-    /* Row Styling */
-    .row {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 20px;
-        width: 100%;
-        max-width: 1100px;
-        padding: 0 10px;
-        z-index: 1;
-    }
-
-    .col-md-4 {
-        display: flex;
-        justify-content: center;
-    }
-
-    .mb-3 {
-        margin-bottom: 0; /* Grid gap handles spacing */
-    }
-
-    /* Card Styling */
-    .card {
-        background: #1c1c24;
-        border-radius: 10px;
-        padding: 20px;
-        border: 1px solid #2a2a33;
-        text-align: center;
-        transition: all 0.3s ease;
-        width: 100%;
-        max-width: 320px;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .card:hover {
-        border-color: #5e5ce6;
-        transform: translateY(-4px);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 3px;
-        background: linear-gradient(90deg, #5e5ce6, transparent);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-
-    .card:hover::before {
-        opacity: 1;
-    }
-
-    .card h4 {
-        font-size: 1.4rem;
-        font-weight: 600;
-        color: #d4d4d8;
-        margin-bottom: 15px;
-        letter-spacing: 0.5px;
-    }
-
-    /* Button Styling */
-    .card a {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 8px 20px;
-        font-size: 0.95rem;
-        font-weight: 500;
-        color: #fff;
-        background: #5e5ce6;
-        text-decoration: none;
-        border-radius: 6px;
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .card a:hover {
-        background: #7876ff;
-        box-shadow: 0 0 10px rgba(94, 92, 230, 0.4);
-    }
-
-    .card a::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: rgba(255, 255, 255, 0.1);
-        transition: all 0.4s ease;
-    }
-
-    .card a:hover::after {
-        left: 100%;
-    }
-
-    /* Responsive Adjustments */
-    @media (max-width: 768px) {
-        h2.text-center {
-            font-size: 1.75rem;
-        }
-        .header-wrapper {
-            padding: 30px 0 15px;
-        }
-        .row {
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        }
-        .card {
-            padding: 15px;
-        }
-        .card h4 {
-            font-size: 1.3rem;
-        }
-        .card a {
-            padding: 8px 16px;
-        }
-    }
-
-    @media (max-width: 480px) {
-        h2.text-center {
-            font-size: 1.5rem;
-        }
-        .header-wrapper {
-            padding: 20px 0 10px;
-        }
-        .row {
-            grid-template-columns: 1fr;
-        }
-        .card {
-            max-width: 280px;
-        }
-        .card h4 {
-            font-size: 1.2rem;
-        }
-        .card a {
-            padding: 6px 14px;
-            font-size: 0.9rem;
-        }
-    }
-</style>
-
-<div class="container">
-    <div class="header-wrapper">
-        <h2 class="text-center">Subjects for {{ ucfirst($plan) }} Plan</h2>
+        <a href="{{ route('courses.catalog') }}" class="btn-edu-secondary btn-sm px-4">
+            <i class="fas fa-compass me-1"></i> Browse Full Course Catalog
+        </a>
     </div>
-    
-    <div class="row">
-        @foreach($subjects as $subject)
-        <div class="col-md-4 mb-3">
-            <div class="card">
-                <h4>{{ $subject->name }}</h4>
-                <a href="{{ url('/frontend/materials/' . $subject->id . '/' . $plan) }}">View Materials</a>
+
+    <!-- Modules Grid -->
+    <div class="row g-4">
+        @forelse($subjects as $subject)
+            @php
+                $course = $subject->course;
+                $materialsCount = $subject->materials ? $subject->materials->count() : 0;
+                $videoCount = $subject->materials ? $subject->materials->where('type', 'video')->count() : 0;
+                $pdfCount = $subject->materials ? $subject->materials->where('type', 'pdf')->count() : 0;
+                $notesCount = $subject->materials ? $subject->materials->where('type', 'handwritten')->count() : 0;
+            @endphp
+            <div class="col-sm-6 col-lg-4">
+                <div class="edu-card-panel h-100 d-flex flex-column justify-content-between p-4 shadow-sm position-relative">
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-20 small px-2.5 py-1">
+                                <i class="fas fa-book-open me-1"></i> Module
+                            </span>
+                            @if($subject->plan)
+                                <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-20 small">
+                                    {{ $subject->plan }}
+                                </span>
+                            @endif
+                        </div>
+
+                        <h3 class="fw-bold mb-2 fs-5">
+                            {{ $subject->name }}
+                        </h3>
+
+                        @if($course)
+                            <div class="d-flex align-items-center gap-2 mb-3 p-2 rounded" style="background: var(--bg-secondary);">
+                                <img src="{{ $course->thumbnail ?? 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=120' }}" 
+                                     alt="{{ $course->name }}" 
+                                     class="rounded" 
+                                     style="width: 38px; height: 38px; object-fit: cover;">
+                                <div class="overflow-hidden">
+                                    <div class="text-muted small" style="font-size: 0.7rem; text-transform: uppercase; font-weight: 600;">Part of Course</div>
+                                    <a href="{{ route('courses.detail', $course->id) }}" class="fw-semibold small text-truncate d-block text-decoration-none" style="color: var(--text-main);">
+                                        {{ $course->name }}
+                                    </a>
+                                </div>
+                            </div>
+                        @endif
+
+                        <div class="d-flex flex-wrap gap-2 text-muted small my-3">
+                            <span class="d-inline-flex align-items-center gap-1">
+                                <i class="fas fa-play-circle text-primary"></i> {{ $videoCount }} Videos
+                            </span>
+                            <span>•</span>
+                            <span class="d-inline-flex align-items-center gap-1">
+                                <i class="fas fa-file-pdf text-danger"></i> {{ $pdfCount }} PDFs
+                            </span>
+                            <span>•</span>
+                            <span class="d-inline-flex align-items-center gap-1">
+                                <i class="fas fa-pen-fancy text-warning"></i> {{ $notesCount }} Notes
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="pt-3 border-top" style="border-color: var(--border-color) !important;">
+                        @if($course)
+                            <a href="{{ route('frontend.materials', ['id' => $course->id]) }}" class="btn-edu-primary btn-sm w-100 justify-content-center">
+                                <i class="fas fa-chalkboard me-1"></i> Open Learning Workspace
+                            </a>
+                        @else
+                            <a href="{{ route('courses.catalog') }}" class="btn-edu-secondary btn-sm w-100 justify-content-center">
+                                Explore Courses
+                            </a>
+                        @endif
+                    </div>
+                </div>
             </div>
-        </div>
-        @endforeach
+        @empty
+            <div class="col-12 text-center py-5">
+                <div class="edu-card-panel py-5 max-w-500 mx-auto" style="max-width: 500px;">
+                    <i class="fas fa-layer-group fa-3x text-muted mb-3 opacity-50"></i>
+                    <h4 class="fw-bold mb-2">No Modules Found</h4>
+                    <p class="text-muted small mb-4">Curriculum modules will appear here as instructors publish syllabus units.</p>
+                    <a href="{{ route('courses.catalog') }}" class="btn-edu-primary px-4">Browse Courses</a>
+                </div>
+            </div>
+        @endforelse
     </div>
+
 </div>
 @endsection

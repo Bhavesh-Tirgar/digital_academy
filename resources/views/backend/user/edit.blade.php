@@ -1,46 +1,57 @@
 @extends('backend.master')
-@section('title', 'Digital AcademysS')
-@extends('layouts.admin')
+@section('title', 'Update User - Digital Academy')
 @section('content')
-<div class="row">
-    <div class="col-md-12">
+<div class="row justify-content-center">
+    <div class="col-md-8">
         <div class="card">
-            <div class="card-header bg-primary">
-                <h5 class="text-center text-uppercase"><strong>user update</strong></h5>
+            <div class="card-header bg-primary text-white">
+                <h5 class="text-center text-uppercase mb-0"><strong>User Update</strong></h5>
             </div>
 
-            <form action="{{ url('admin/users/'.$user->id.'/update') }}" method="POST">
+            <form action="{{ route('users.update', $user->id) }}" method="POST">
                 @csrf 
-            <div class="card-body">
-                <div class="form-group">
-                    <label for="">Name</label>
-                    <input type="text" name="name" value="{{ $user->name }}" class="form-control" @error('name') is-invalid @enderror >
-                    @error('name')
-                    <span class="text-danger"> {{$message}}</span>
-                    @enderror
+                @method('PUT')
+                <div class="card-body">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    <div class="form-group mb-3">
+                        <label for="name" class="text-white">Name</label>
+                        <input type="text" id="name" name="name" value="{{ old('name', $user->name) }}" class="form-control @error('name') is-invalid @enderror" required>
+                        @error('name')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="email" class="text-white">Email</label>
+                        <input type="email" id="email" name="email" value="{{ old('email', $user->email) }}" class="form-control @error('email') is-invalid @enderror" required>
+                        @error('email')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="role" class="text-white">Role</label>
+                        <select name="role" id="role" class="form-select">
+                            <option value="student" @if($user->role == 'student' || $user->role == 'user') selected @endif>Student (Learner)</option>
+                            <option value="instructor" @if($user->role == 'instructor') selected @endif>Instructor (Course Creator)</option>
+                            <option value="admin" @if($user->role == 'admin') selected @endif>Admin</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="">Email</label>
-                    <input type="email" name="email" value="{{ $user->email }}" class="form-control" @error('name') is-invalid @enderror >
-                    @error('email')
-                    <span class="text-danger"> {{$message}}</span>
-                    @enderror
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary mt-2">Update</button>
+                    <a href="{{ route('users.index') }}" class="btn btn-secondary mt-2 ms-2">Cancel</a>
                 </div>
-                <div class="form-group">
-                    <label for="">Status</label>
-                    <select name="status" id="" class="form-control">
-                        <option value="">Select Status</option>
-                        <option value="admin" @if($user->status == 'admin') selected @endif>
-                            Admin</option>
-                        <option value="user" @if($user->status == 'user') selected @endif>
-                            User</option>
-                    </select>
-                </div>
-            </div>
-            <div class="card-footer">
-                <button class="btn btn-primary mt-3">Update</button>
-            </div>
-        </form>
+            </form>
         </div>  
     </div>
 </div>

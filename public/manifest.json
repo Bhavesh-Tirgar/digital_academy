@@ -1,0 +1,50 @@
+{
+  "id": "/",
+  "name": "Digital Academy – Engineering Cohorts",
+  "short_name": "DigitalAcademy",
+  "description": "Silicon Valley-grade engineering cohorts, live masterclasses, and verified certifications.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0c0f1d",
+  "theme_color": "#4f46e5",
+  "categories": ["education", "developer", "productivity"],
+  "icons": [
+    {
+      "src": "/images/pwa/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/pwa/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Explore Courses",
+      "short_name": "Courses",
+      "description": "View verified engineering tracks",
+      "url": "/courses",
+      "icons": [{ "src": "/images/pwa/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Live Masterclasses",
+      "short_name": "Live",
+      "description": "Attend live interactive studio sessions",
+      "url": "/schedule",
+      "icons": [{ "src": "/images/pwa/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "My Learning Console",
+      "short_name": "Console",
+      "description": "Access your enrolled courses and tasks",
+      "url": "/student-dashboard",
+      "icons": [{ "src": "/images/pwa/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

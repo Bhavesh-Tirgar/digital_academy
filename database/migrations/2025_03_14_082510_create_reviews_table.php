@@ -5,18 +5,20 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    public function up()
+    public function up(): void
     {
-        Schema::table('reviews', function (Blueprint $table) {
-            $table->dropForeign(['course_id']);
-            $table->dropColumn('course_id');
+        Schema::create('reviews', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('course_id')->nullable()->constrained()->onDelete('cascade');
+            $table->unsignedTinyInteger('rating')->default(5);
+            $table->text('review');
+            $table->timestamps();
         });
     }
 
-    public function down()
+    public function down(): void
     {
-        Schema::table('reviews', function (Blueprint $table) {
-            $table->foreignId('course_id')->constrained()->onDelete('cascade');
-        });
+        Schema::dropIfExists('reviews');
     }
 };

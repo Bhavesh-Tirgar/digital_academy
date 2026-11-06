@@ -1,26 +1,42 @@
-@extends('layouts.app')
+@extends('backend.master')
 
-@extends('layouts.admin')
-
-@section('title', 'Digital Academy')
+@section('title', 'Add Course - Digital Academy')
 
 @section('content')
-<div class="container">
-    <h2>Add a Subject</h2>
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0 text-center text-uppercase"><strong>Add New Course</strong></h5>
+            </div>
+            <div class="card-body">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
-    <form action="{{ route('subjects.store') }}" method="POST">
-        @csrf
-        <label>Course:</label>
-        <select name="course_id" class="form-control">
-            @foreach($courses as $course)
-                <option value="{{ $course->id }}">{{ $course->name }}</option>
-            @endforeach
-        </select>
+                <form action="{{ route('courses.store') }}" method="POST">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="name" class="form-label text-white">Course Name:</label>
+                        <input type="text" id="name" name="name" class="form-control" value="{{ old('name') }}" placeholder="e.g. Basic, Standard, Premium" required>
+                    </div>
 
-        <label>Subject Name:</label>
-        <input type="text" name="name" class="form-control" required>
+                    <div class="mb-3">
+                        <label for="description" class="form-label text-white">Description (optional):</label>
+                        <textarea id="description" name="description" class="form-control" rows="4" placeholder="Course description...">{{ old('description') }}</textarea>
+                    </div>
 
-        <button type="submit" class="btn btn-primary mt-3">Add Subject</button>
-    </form>
+                    <button type="submit" class="btn btn-primary mt-2">Add Course</button>
+                    <a href="{{ route('courses.index') }}" class="btn btn-secondary mt-2 ms-2">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection

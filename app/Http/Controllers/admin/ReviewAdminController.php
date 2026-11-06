@@ -15,6 +15,30 @@ class ReviewAdminController extends Controller
         return view('backend.reviews.index', compact('reviews'));
     }
 
+    // Show edit review form
+    public function edit($id)
+    {
+        $review = Review::with(['user', 'course'])->findOrFail($id);
+        return view('backend.reviews.edit', compact('review'));
+    }
+
+    // Update review content and rating
+    public function update(Request $request, $id)
+    {
+        $review = Review::findOrFail($id);
+        $request->validate([
+            'review' => 'required|string|max:1000',
+            'rating' => 'required|integer|min:1|max:5',
+        ]);
+
+        $review->update([
+            'review' => $request->review,
+            'rating' => $request->rating,
+        ]);
+
+        return redirect()->route('admin.reviews.index')->with('success', 'Review updated successfully!');
+    }
+
     // Delete a review
     public function destroy($id)
     {

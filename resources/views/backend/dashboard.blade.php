@@ -1,5 +1,4 @@
 @extends('backend.master')
-@extends('layouts.admin')
 
 @section('title', 'Digital Academy')
 

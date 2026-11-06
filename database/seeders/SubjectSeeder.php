@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders; // ✅ Correct Namespace
+namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -12,9 +12,10 @@ class SubjectSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('subjects')->insert([
-            ['name' => 'Python', 'course_id' => 1],
-            
+        DB::table('subjects')->insertOrIgnore([
+            ['id' => 1, 'name' => 'Python', 'course_id' => 1, 'plan' => 'Basic'],
+            ['id' => 2, 'name' => 'Web Development', 'course_id' => 2, 'plan' => 'Standard'],
+            ['id' => 3, 'name' => 'Machine Learning', 'course_id' => 3, 'plan' => 'Premium'],
         ]);
     }
 }

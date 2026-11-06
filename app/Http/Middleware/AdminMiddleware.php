@@ -10,10 +10,9 @@ class AdminMiddleware
 {
     public function handle($request, Closure $next)
     {
-        if (auth()->user() && auth()->user()->role == 'admin') {
+        if (Auth::check() && (Auth::user()->role === 'admin' || Auth::user()->role_id == 1)) {
             return $next($request);
         }
-        return redirect('/home'); // Redirect non-admins
+        return redirect('/home');
     }
-    
 }

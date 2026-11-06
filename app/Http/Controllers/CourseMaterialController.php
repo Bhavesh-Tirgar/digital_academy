@@ -8,26 +8,21 @@ use App\Models\Material;
 class CourseMaterialController extends Controller
 {
     /**
-     * Show subjects based on the selected plan.
+     * Show subjects for courses (redirects to catalog or displays subject modules).
      */
-    public function showSubjects($plan) {
-        // Fetch subjects added by the admin for the selected plan
-        $subjects = Subject::where('plan', $plan)->get();
-
-        // Redirect to the subjects view
-        return view('frontend.subjects', compact('subjects', 'plan'));
+    public function showSubjects($plan = null) {
+        $subjects = Subject::with(['course', 'materials'])->get();
+        return view('frontend.subjects', compact('subjects'));
     }
 
     /**
-     * Show course materials based on the selected subject and plan.
+     * Show course materials without arbitrary plan restrictions (all videos, pdfs, notes unlocked).
      */
-    public function showMaterials($subject_id, $plan) {
-        // Fetch materials dynamically based on plan selection
-        $videos = Material::where('subject_id', $subject_id)->where('type', 'video')->get();
-        $pdfs = ($plan != 'basic') ? Material::where('subject_id', $subject_id)->where('type', 'pdf')->get() : collect();
-        $notes = ($plan == 'premium') ? Material::where('subject_id', $subject_id)->where('type', 'handwritten')->get() : collect();
+    public function showMaterials($subject_id, $plan = null) {
+        $subject = Subject::with(['course', 'materials'])->findOrFail($subject_id);
+        $course = $subject->course;
+        $materials = $subject->materials;
 
-        // Redirect to the materials view
-        return view('frontend.materials', compact('videos', 'pdfs', 'notes', 'plan'));
+        return view('frontend.materials', compact('subject', 'course', 'materials'));
     }
 }

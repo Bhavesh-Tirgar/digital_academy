@@ -1,6 +1,5 @@
 @extends('backend.master')
 @section('title', 'Digital AcademysS')
-@extends('layouts.admin')
 @section('content')
 <style>
     /* Container Styling */
@@ -220,7 +219,7 @@
                         <th>Index</th>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Status</th>
+                        <th>Role</th>
                         <th>Date</th>
                         <th>Action</th>
                     </tr>
@@ -231,14 +230,14 @@
                         <td>{{ $loop->index + $users->firstItem() }}</td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
-                        <td>{{ $user->status }}</td>
+                        <td>{{ ucfirst($user->role) }}</td>
                         <td>{{ date('d-M-y', strtotime($user->created_at)) }}</td>
                         <td>
                             <div class="action-buttons">
                                 <a href="{{ url('admin/users/'.$user->id.'/edit') }}" class="btn btn-action btn-edit">
                                     <i class="far fa-edit"></i> Edit
                                 </a>
-                                <form action="{{ url('admin/users/'.$user->id.'/delete') }}" method="POST">
+                                <form action="{{ route('users.destroy', $user->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-action btn-delete" onclick="return confirm('Are you sure you want to delete?')">

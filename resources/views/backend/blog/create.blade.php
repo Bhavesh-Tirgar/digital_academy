@@ -2,7 +2,6 @@
 @section('title', 'Create Blog')
 @extends('backend.master')
 @section('title', 'Digital Academy')
-@extends('layouts.admin')
 @section('content')
 <div class="row justify-content-center">
     <div class="col-md-8">

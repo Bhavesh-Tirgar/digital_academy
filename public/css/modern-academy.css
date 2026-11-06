@@ -1,0 +1,1316 @@
+/* ==========================================================================
+   DIGITAL ACADEMY - MODERN EDUCATIONAL PLATFORM DESIGN SYSTEM
+   Coursera / Udemy / Khan Academy / Maven Inspired Architecture
+   Clean, Content-First, Fully Mobile-Responsive, Zero Wall-of-Text
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+/* ==========================================================================
+   DESIGN TOKENS & COLOR PALETTES
+   ========================================================================== */
+:root,
+[data-theme="light"] {
+    --bg-main: #f8fafc;
+    --bg-card: #ffffff;
+    --bg-secondary: #f1f5f9;
+    --bg-input: #ffffff;
+    --border-color: #e2e8f0;
+    --border-subtle: #edf2f7;
+    
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --primary-light: rgba(37, 99, 235, 0.08);
+    --primary-border: rgba(37, 99, 235, 0.2);
+    
+    --accent-emerald: #10b981;
+    --accent-amber: #f59e0b;
+    --accent-rose: #ef4444;
+    --accent-cyan: #0284c7;
+    
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --text-light: #94a3b8;
+    
+    --navbar-bg: rgba(255, 255, 255, 0.94);
+    --navbar-border: #e2e8f0;
+    --dropdown-bg: #ffffff;
+    --footer-bg: #0f172a;
+    --footer-text: #94a3b8;
+    
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-xl: 20px;
+    --radius-full: 9999px;
+    
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 4px 14px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+    --shadow-lg: 0 12px 28px -4px rgba(0, 0, 0, 0.09), 0 4px 8px -3px rgba(0, 0, 0, 0.04);
+    --card-shadow-hover: 0 14px 30px -4px rgba(37, 99, 235, 0.12), 0 4px 10px -2px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="dark"] {
+    --bg-main: #0b1120;
+    --bg-card: #131d31;
+    --bg-secondary: #0f172a;
+    --bg-input: #0f172a;
+    --border-color: #1e293b;
+    --border-subtle: #172236;
+    
+    --primary: #3b82f6;
+    --primary-hover: #2563eb;
+    --primary-light: rgba(59, 130, 246, 0.12);
+    --primary-border: rgba(59, 130, 246, 0.25);
+    
+    --accent-emerald: #10b981;
+    --accent-amber: #f59e0b;
+    --accent-rose: #ef4444;
+    --accent-cyan: #38bdf8;
+    
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --text-light: #475569;
+    
+    --navbar-bg: rgba(11, 17, 32, 0.95);
+    --navbar-border: #1e293b;
+    --dropdown-bg: #131d31;
+    --footer-bg: #070a12;
+    --footer-text: #64748b;
+    
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 14px -1px rgba(0, 0, 0, 0.45);
+    --shadow-lg: 0 12px 28px -4px rgba(0, 0, 0, 0.5);
+    --card-shadow-hover: 0 14px 30px -4px rgba(0, 0, 0, 0.6), 0 0 15px rgba(59, 130, 246, 0.15);
+}
+
+/* ==========================================================================
+   GLOBAL RESET & BASE TYPOGRAPHY
+   ========================================================================== */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    padding-bottom: 70px; /* Space for mobile bottom bar */
+}
+
+@media (min-width: 992px) {
+    body {
+        padding-bottom: 0;
+    }
+}
+
+a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+a:hover {
+    color: var(--primary-hover);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+}
+
+/* ==========================================================================
+   CLEAN EDUCATIONAL NAVBAR
+   ========================================================================== */
+.edu-navbar {
+    background: var(--navbar-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--navbar-border);
+    position: sticky;
+    top: 0;
+    z-index: 1040;
+    padding: 12px 0;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.edu-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text-primary) !important;
+    letter-spacing: -0.03em;
+}
+
+.edu-brand-badge {
+    width: 34px;
+    height: 34px;
+    background: var(--primary);
+    color: #ffffff;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+
+.edu-nav-search {
+    position: relative;
+    max-width: 380px;
+    width: 100%;
+}
+
+.edu-nav-search input {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: var(--radius-full);
+    padding: 8px 16px 8px 38px;
+    font-size: 0.88rem;
+    width: 100%;
+    transition: all 0.2s ease;
+}
+
+.edu-nav-search input:focus {
+    outline: none;
+    background: var(--bg-card);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.edu-nav-search i {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.edu-nav-link {
+    color: var(--text-secondary) !important;
+    font-weight: 600;
+    font-size: 0.92rem;
+    padding: 8px 14px !important;
+    border-radius: var(--radius-md);
+    transition: all 0.15s ease;
+}
+
+.edu-nav-link:hover,
+.edu-nav-link.active {
+    color: var(--primary) !important;
+    background: var(--primary-light);
+}
+
+/* ==========================================================================
+   MOBILE BOTTOM NAVIGATION BAR (APP EXPERIENCE)
+   ========================================================================== */
+.mobile-bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background: var(--navbar-bg);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-top: 1px solid var(--border-color);
+    z-index: 1050;
+    justify-content: space-around;
+    align-items: center;
+    padding: 4px 8px;
+}
+
+@media (min-width: 992px) {
+    .mobile-bottom-nav {
+        display: none !important;
+    }
+}
+
+.mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-decoration: none;
+    flex: 1;
+    padding: 6px 0;
+    border-radius: var(--radius-md);
+    transition: color 0.15s ease;
+    position: relative;
+}
+
+.mobile-nav-item i {
+    font-size: 1.15rem;
+    margin-bottom: 2px;
+}
+
+.mobile-nav-item.active,
+.mobile-nav-item:hover {
+    color: var(--primary) !important;
+}
+
+.mobile-live-dot {
+    position: absolute;
+    top: 6px;
+    right: 32%;
+    width: 7px;
+    height: 7px;
+    background: var(--accent-rose);
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--accent-rose);
+}
+
+/* ==========================================================================
+   HERO BANNER (INSPIRATIONAL & VISUAL, NO WALL OF TEXT)
+   ========================================================================== */
+.edu-hero-section {
+    padding: 40px 0 32px 0;
+}
+
+@media (min-width: 768px) {
+    .edu-hero-section {
+        padding: 56px 0 40px 0;
+    }
+}
+
+.edu-hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--primary);
+    background: var(--primary-light);
+    border: 1px solid var(--primary-border);
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    margin-bottom: 16px;
+}
+
+.edu-hero-title {
+    font-size: 2.25rem;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    margin-bottom: 14px;
+}
+
+@media (min-width: 768px) {
+    .edu-hero-title {
+        font-size: 3.25rem;
+    }
+}
+
+.edu-hero-sub {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 24px;
+    max-width: 580px;
+}
+
+.edu-hero-search {
+    display: flex;
+    align-items: center;
+    background: var(--bg-card);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 6px 8px 6px 18px;
+    box-shadow: var(--shadow-sm);
+    max-width: 540px;
+    transition: all 0.2s ease;
+}
+
+.edu-hero-search:focus-within {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px var(--primary-light);
+}
+
+.edu-hero-search input {
+    border: none;
+    background: transparent;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    width: 100%;
+    outline: none;
+    padding: 8px 0;
+}
+
+/* ==========================================================================
+   CATEGORY & TOPIC CHIPS (HORIZONTALLY SWIPEABLE ON MOBILE)
+   ========================================================================== */
+.topic-chips-wrapper {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 4px 0 14px 0;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.topic-chips-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.topic-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    border-radius: var(--radius-full);
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    transition: all 0.15s ease;
+    cursor: pointer;
+}
+
+.topic-chip:hover,
+.topic-chip.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+}
+
+/* ==========================================================================
+   MODERN COURSE CARDS (COURSERA / UDEMY STANDARD)
+   ========================================================================== */
+.edu-course-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.edu-course-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--card-shadow-hover);
+    border-color: var(--primary-border);
+}
+
+.edu-card-thumb-wrap {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    overflow: hidden;
+    background: #0f172a;
+}
+
+.edu-card-thumb-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.edu-course-card:hover .edu-card-thumb-img {
+    transform: scale(1.03);
+}
+
+.edu-level-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(15, 23, 42, 0.82);
+    color: #ffffff;
+    backdrop-filter: blur(6px);
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.edu-play-preview-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(15, 23, 42, 0.85);
+    color: #ffffff;
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.edu-play-preview-btn:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.edu-card-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
+}
+
+.edu-card-category {
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--primary);
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+}
+
+.edu-card-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.35;
+    margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 2.7em;
+}
+
+.edu-card-instructor {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.edu-card-instructor img {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.edu-card-instructor span {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.edu-card-rating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    margin-bottom: 12px;
+}
+
+.edu-rating-star {
+    color: var(--accent-amber);
+    font-weight: 800;
+}
+
+.edu-rating-count {
+    color: var(--text-muted);
+}
+
+.edu-card-footer {
+    padding-top: 12px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.edu-card-price {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+/* ==========================================================================
+   BUTTONS (CLEAN, SOLID, TOUCH-FRIENDLY)
+   ========================================================================== */
+.btn-edu-primary {
+    background: var(--primary);
+    color: #ffffff !important;
+    font-weight: 600;
+    font-size: 0.92rem;
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    border: none;
+    box-shadow: 0 1px 3px rgba(37, 99, 235, 0.3);
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+    cursor: pointer;
+    min-height: 42px;
+}
+
+.btn-edu-primary:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+}
+
+.btn-edu-secondary {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary) !important;
+    font-weight: 600;
+    font-size: 0.92rem;
+    padding: 10px 18px;
+    border-radius: var(--radius-md);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.15s ease;
+    min-height: 42px;
+}
+
+.btn-edu-secondary:hover {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+    color: var(--primary) !important;
+}
+
+/* ==========================================================================
+   LIVE BADGES & COHORT CARDS
+   ========================================================================== */
+.badge-live-pulse {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: var(--accent-rose);
+    font-size: 0.74rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+}
+
+.badge-live-pulse::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    background: var(--accent-rose);
+    border-radius: 50%;
+    animation: live-blink 1.4s infinite ease-in-out;
+}
+
+@keyframes live-blink {
+    0% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* ==========================================================================
+   CLEAN SECTIONS & UTILITIES
+   ========================================================================== */
+.edu-section-title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+}
+
+.edu-section-sub {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+}
+
+.edu-card-panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+}
+
+/* ==========================================================================
+   STAT & METRIC CARDS (DASHBOARD & ANALYTICS)
+   ========================================================================== */
+.edu-stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 20px 24px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.2s ease;
+}
+
+.edu-stat-card:hover {
+    border-color: var(--primary-border);
+    box-shadow: var(--shadow-md);
+}
+
+.edu-stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    flex-shrink: 0;
+}
+
+.edu-stat-icon.primary { background: var(--primary-light); color: var(--primary); }
+.edu-stat-icon.success { background: rgba(16, 185, 129, 0.1); color: var(--accent-emerald); }
+.edu-stat-icon.warning { background: rgba(245, 158, 11, 0.1); color: var(--accent-amber); }
+.edu-stat-icon.info { background: rgba(2, 132, 199, 0.1); color: var(--accent-cyan); }
+.edu-stat-icon.danger { background: rgba(239, 68, 68, 0.1); color: var(--accent-rose); }
+
+.edu-stat-val {
+    font-size: 1.75rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--text-primary);
+}
+
+.edu-stat-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-top: 2px;
+}
+
+.edu-stat-sub {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+/* ==========================================================================
+   SYLLABUS & ACCORDION (COURSERA / UDEMY STANDARD)
+   ========================================================================== */
+.edu-accordion .accordion-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md) !important;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.edu-accordion .accordion-button {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 16px 20px;
+    box-shadow: none !important;
+}
+
+.edu-accordion .accordion-button:not(.collapsed) {
+    background: var(--bg-secondary);
+    color: var(--primary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.edu-accordion .accordion-button::after {
+    filter: invert(var(--theme-invert, 0));
+}
+
+[data-theme="dark"] .edu-accordion .accordion-button::after {
+    filter: invert(1);
+}
+
+.edu-accordion .accordion-body {
+    background: var(--bg-card);
+    padding: 12px 20px;
+}
+
+.edu-material-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 0.88rem;
+}
+
+.edu-material-row:last-child {
+    border-bottom: none;
+}
+
+.edu-material-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-sm);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    margin-right: 10px;
+}
+
+/* ==========================================================================
+   CLEAN TABS (DASHBOARDS & SECTIONS)
+   ========================================================================== */
+.edu-tabs {
+    display: flex;
+    gap: 8px;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 2px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.edu-tab-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.92rem;
+    padding: 10px 18px;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    position: relative;
+}
+
+.edu-tab-btn:hover {
+    color: var(--primary);
+}
+
+.edu-tab-btn.active {
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.edu-tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--primary);
+    border-radius: var(--radius-full);
+}
+
+/* ==========================================================================
+   CLEAN DATA TABLES (INSTRUCTOR REVENUE & ENROLLMENTS)
+   ========================================================================== */
+.edu-table-responsive {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.edu-table {
+    width: 100%;
+    margin-bottom: 0;
+    color: var(--text-primary);
+    vertical-align: middle;
+}
+
+.edu-table th {
+    background: var(--bg-secondary);
+    color: var(--text-muted);
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.edu-table td {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.88rem;
+    color: var(--text-primary);
+}
+
+.edu-table tr:last-child td {
+    border-bottom: none;
+}
+
+.edu-table tr:hover td {
+    background: var(--primary-light);
+}
+
+/* ==========================================================================
+   Q&A FORUM / LECTURE DISCUSSION
+   ========================================================================== */
+.edu-comment-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 18px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow-sm);
+}
+
+.edu-comment-card.instructor-reply {
+    border-left: 4px solid var(--accent-emerald);
+    background: rgba(16, 185, 129, 0.03);
+}
+
+.edu-comment-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    color: var(--primary);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.88rem;
+}
+
+.edu-instructor-badge {
+    background: rgba(16, 185, 129, 0.12);
+    color: var(--accent-emerald);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: var(--radius-full);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.edu-code-snippet {
+    background: #0f172a;
+    color: #38bdf8;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    font-family: monospace;
+    font-size: 0.82rem;
+    overflow-x: auto;
+    margin: 8px 0;
+}
+
+/* ==========================================================================
+   MOBILE STICKY ENROLLMENT BAR (FOR COURSE DETAIL)
+   ========================================================================== */
+.edu-mobile-enroll-bar {
+    display: none;
+    position: fixed;
+    bottom: 64px; /* Sits right above bottom nav */
+    left: 0;
+    right: 0;
+    background: var(--bg-card);
+    border-top: 1px solid var(--border-color);
+    padding: 10px 16px;
+    z-index: 1030;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08);
+    align-items: center;
+    justify-content: space-between;
+}
+
+@media (max-width: 991px) {
+    .edu-mobile-enroll-bar {
+        display: flex;
+    }
+}
+
+/* ==========================================================================
+   GRACEFUL BACKWARD COMPATIBILITY HELPERS
+   Prevents any unmigrated view from showing broken dark-neon styles
+   ========================================================================== */
+.glass-card {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: var(--radius-lg) !important;
+    color: var(--text-primary) !important;
+    box-shadow: var(--shadow-sm) !important;
+}
+
+.btn-glow-primary {
+    background: var(--primary) !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    border: none !important;
+    border-radius: var(--radius-md) !important;
+    box-shadow: 0 1px 3px rgba(37, 99, 235, 0.3) !important;
+    padding: 8px 18px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    text-decoration: none !important;
+    transition: all 0.15s ease !important;
+}
+
+.btn-glow-primary:hover {
+    background: var(--primary-hover) !important;
+    color: #ffffff !important;
+    transform: translateY(-1px) !important;
+}
+
+.btn-glass {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-primary) !important;
+    border-radius: var(--radius-md) !important;
+    font-weight: 600 !important;
+    padding: 8px 16px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    text-decoration: none !important;
+    transition: all 0.15s ease !important;
+}
+
+.btn-glass:hover {
+    background: var(--bg-secondary) !important;
+    color: var(--primary) !important;
+}
+
+.course-card {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: var(--radius-lg) !important;
+    overflow: hidden !important;
+    box-shadow: var(--shadow-sm) !important;
+    color: var(--text-primary) !important;
+}
+
+.course-thumbnail-wrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%;
+    overflow: hidden;
+    background: #0f172a;
+}
+
+.course-thumbnail-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.course-badge-level {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(15, 23, 42, 0.85);
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+}
+
+.btn-preview-demo {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(15, 23, 42, 0.85);
+    color: #ffffff;
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-full);
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    cursor: pointer;
+}
+
+.course-body {
+    padding: 16px;
+}
+
+.course-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.course-title a {
+    color: var(--text-primary) !important;
+}
+
+.course-category-tag {
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--primary);
+    letter-spacing: 0.04em;
+}
+
+.course-meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-color);
+}
+
+.course-price-tag {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.checkout-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-md);
+}
+
+/* Fix Bootstrap table-dark overrides */
+.table.table-dark {
+    --bs-table-bg: var(--bg-card);
+    --bs-table-color: var(--text-primary);
+    --bs-table-border-color: var(--border-color);
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+}
+
+.table.table-dark th {
+    background-color: var(--bg-secondary);
+    color: var(--text-muted);
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 576px) {
+    .edu-section-title {
+        font-size: 1.45rem;
+    }
+    .edu-card-panel {
+        padding: 16px;
+    }
+}
+
+/* Universal Theme-Responsive Form Controls */
+.form-control, .form-select {
+    background-color: var(--bg-input) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-primary) !important;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: var(--bg-card) !important;
+    border-color: var(--primary) !important;
+    color: var(--text-primary) !important;
+    box-shadow: 0 0 0 3px var(--primary-light) !important;
+}
+
+.form-control::placeholder {
+    color: var(--text-muted) !important;
+    opacity: 0.7;
+}
+
+/* ==========================================================================
+   ENTERPRISE ED-TECH TRUST BAR (GOOGLE, AMAZON, MICROSOFT, META)
+   ========================================================================== */
+.edu-trust-strip {
+    padding: 24px 0;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 40px;
+}
+
+.edu-trust-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.edu-trust-logos {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 32px 48px;
+    opacity: 0.65;
+    transition: opacity 0.2s ease;
+}
+
+.edu-trust-logos:hover {
+    opacity: 0.95;
+}
+
+.edu-trust-brand {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-secondary);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: -0.02em;
+    user-select: none;
+}
+
+.edu-trust-brand i {
+    font-size: 1.35rem;
+}
+
+/* ==========================================================================
+   INTERACTIVE CATEGORY TILES (MODERN EDX / COURSERA MODEL)
+   ========================================================================== */
+.edu-category-tile {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-sm);
+    height: 100%;
+}
+
+.edu-category-tile:hover {
+    transform: translateY(-3px);
+    border-color: var(--primary);
+    box-shadow: var(--card-shadow-hover);
+}
+
+.edu-cat-icon-wrap {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+}
+
+.edu-category-tile:hover .edu-cat-icon-wrap {
+    transform: scale(1.1);
+}
+
+.edu-cat-icon-wrap.blue { background: rgba(37, 99, 235, 0.12); color: #2563eb; }
+.edu-cat-icon-wrap.purple { background: rgba(147, 51, 234, 0.12); color: #9333ea; }
+.edu-cat-icon-wrap.emerald { background: rgba(16, 185, 129, 0.12); color: #10b981; }
+.edu-cat-icon-wrap.amber { background: rgba(245, 158, 11, 0.12); color: #f59e0b; }
+.edu-cat-icon-wrap.rose { background: rgba(239, 68, 68, 0.12); color: #ef4444; }
+.edu-cat-icon-wrap.cyan { background: rgba(6, 182, 212, 0.12); color: #06b6d4; }
+
+.edu-cat-tile-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+}
+
+.edu-cat-tile-sub {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* ==========================================================================
+   BESTSELLER & DISCOUNT LABELS
+   ========================================================================== */
+.edu-bestseller-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #f59e0b;
+    color: #000000;
+    font-size: 0.68rem;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    box-shadow: 0 2px 6px rgba(245, 158, 11, 0.4);
+}
+
+.edu-price-strikethrough {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-decoration: line-through;
+    margin-right: 6px;
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   EXPLORE DROPDOWN IN NAVBAR
+   ========================================================================== */
+.edu-explore-dropdown .dropdown-menu {
+    min-width: 320px;
+    padding: 12px;
+    border-radius: var(--radius-lg);
+    background: var(--dropdown-bg);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-lg);
+}
+
+.edu-explore-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    border-radius: var(--radius-md);
+    color: var(--text-primary) !important;
+    text-decoration: none !important;
+    transition: background-color 0.15s ease;
+}
+
+.edu-explore-item:hover {
+    background: var(--bg-secondary);
+}
+
+.edu-explore-item i {
+    width: 20px;
+    text-align: center;
+    color: var(--primary);
+}

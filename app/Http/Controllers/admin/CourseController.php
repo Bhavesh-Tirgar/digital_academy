@@ -27,9 +27,15 @@ class CourseController extends Controller
     // Store new course in database
     public function store(Request $request)
     {
-        $request->validate(['name' => 'required|string|unique:courses,name']);
+        $request->validate([
+            'name' => 'required|string|unique:courses,name',
+            'description' => 'nullable|string',
+        ]);
         
-        Course::create(['name' => $request->name]);
+        Course::create([
+            'name' => $request->name,
+            'description' => $request->description,
+        ]);
 
         return redirect()->route('courses.index')->with('success', 'Course added successfully.');
     }
@@ -40,12 +46,24 @@ class CourseController extends Controller
         return view('backend.courses.edit', compact('course'));
     }
 
+    // Display single course details or redirect to edit
+    public function show(Course $course)
+    {
+        return redirect()->route('courses.edit', $course->id);
+    }
+
     // Update course details
     public function update(Request $request, Course $course)
     {
-        $request->validate(['name' => 'required|string|unique:courses,name,'.$course->id]);
+        $request->validate([
+            'name' => 'required|string|unique:courses,name,'.$course->id,
+            'description' => 'nullable|string',
+        ]);
 
-        $course->update(['name' => $request->name]);
+        $course->update([
+            'name' => $request->name,
+            'description' => $request->description,
+        ]);
 
         return redirect()->route('courses.index')->with('success', 'Course updated successfully.');
     }
@@ -70,9 +88,13 @@ class CourseController extends Controller
     }
 
     // Show upload material form
-    public function uploadMaterial($id, $plan)
+    public function uploadMaterial($id, $plan = null)
     {
         $course = Course::findOrFail($id);
+        $user = \Illuminate\Support\Facades\Auth::user();
+        if ($user && !$user->isAdmin() && $user->id !== $course->instructor_id) {
+            return redirect()->route('instructor.dashboard')->with('error', 'Unauthorized access to this course syllabus.');
+        }
         $subjects = Subject::where('course_id', $id)->get();
         return view('backend.courses.uploadMaterial', compact('course', 'plan', 'subjects'));
     }
@@ -80,12 +102,17 @@ class CourseController extends Controller
     // Store uploaded materials
     public function storeMaterial(Request $request, $id)
     {
+        $course = Course::findOrFail($id);
+        $user = \Illuminate\Support\Facades\Auth::user();
+        if ($user && !$user->isAdmin() && $user->id !== $course->instructor_id) {
+            return redirect()->route('instructor.dashboard')->with('error', 'Unauthorized access to this course syllabus.');
+        }
+
         $request->validate([
             'subject_id' => 'required|exists:subjects,id',
-            'plan_level' => 'required|string',
             'video.*' => 'mimes:mp4,mov,avi|max:50000',
-            'pdf.*' => 'mimes:pdf|max:2048',
-            'handwritten_notes.*' => 'mimes:jpg,jpeg,png|max:2048',
+            'pdf.*' => 'mimes:pdf|max:10000',
+            'handwritten_notes.*' => 'mimes:jpg,jpeg,png,pdf|max:10000',
         ]);
 
         $this->uploadFiles($request, 'video', 'materials/videos', $id);
@@ -99,16 +126,23 @@ class CourseController extends Controller
     private function uploadFiles($request, $type, $path, $courseId)
     {
         if ($request->hasFile($type)) {
+            // Map input field name to MySQL enum ('handwritten_notes' -> 'handwritten')
+            $dbType = ($type === 'handwritten_notes') ? 'handwritten' : $type;
+            
+            // Map title input name
+            $titleInput = ($type === 'handwritten_notes')
+                ? ($request->input('handwritten_title') ?? $request->input('handwritten_notes_title', 'Untitled'))
+                : $request->input($type . '_title', 'Untitled');
+
             foreach ($request->file($type) as $file) {
                 $filePath = $file->store($path, 'public');
 
                 Material::create([
-                    'course_id' => $courseId,
                     'subject_id' => $request->subject_id,
-                    'title' => $request->input($type . '_title', 'Untitled'),
+                    'title' => $titleInput,
                     'file_path' => $filePath,
-                    'type' => $type,
-                    'plan_level' => ucfirst($request->plan_level),
+                    'type' => $dbType,
+                    'plan_level' => 'General',
                 ]);
             }
         }
@@ -119,31 +153,48 @@ class CourseController extends Controller
     {
         $request->validate([
             'course_id' => 'required|exists:courses,id',
-            'name' => 'required|string|unique:subjects,name',
+            'name' => 'required|string',
         ]);
+
+        $course = Course::find($request->course_id);
+        $plan = $request->plan ?? ($course ? $course->name : null);
 
         $subject = Subject::create([
             'course_id' => $request->course_id,
-            'name' => $request->name
+            'name' => $request->name,
+            'plan' => $plan ? ucfirst($plan) : null,
         ]);
 
         return response()->json([
+            'status' => 'success',
             'success' => true,
+            'subject' => [
+                'id' => $subject->id,
+                'name' => $subject->name,
+            ],
             'subject_id' => $subject->id
         ]);
     }
 
-    // View materials based on selected course and plan
-    public function viewMaterials($course_id, $plan)
+    // View materials for selected course
+    public function viewMaterials($course_id, $plan = null)
     {
         $course = Course::find($course_id);
         if (!$course) {
             return redirect()->back()->with('error', 'Course not found.');
         }
 
-        $materials = Material::whereHas('subject', function ($query) use ($course) {
+        if (!auth()->user()->isAdmin() && $course->instructor_id !== auth()->id()) {
+            return redirect()->route('instructor.dashboard')->with('error', 'Unauthorized access to course materials.');
+        }
+
+        $materialsQuery = Material::whereHas('subject', function ($query) use ($course) {
             $query->where('course_id', $course->id);
-        })->where('plan_level', ucfirst($plan))->get();
+        });
+        if ($plan) {
+            $materialsQuery->where('plan_level', ucfirst($plan));
+        }
+        $materials = $materialsQuery->with('subject')->latest()->get();
 
         return view('backend.courses.viewMaterials', compact('course', 'plan', 'materials'));
     }
@@ -157,9 +208,15 @@ class CourseController extends Controller
         ]);
 
         // Get selected materials
-        $materials = Material::whereIn('id', $request->material_ids)->get();
+        $materials = Material::whereIn('id', $request->material_ids)->with('subject.course')->get();
 
+        $deletedCount = 0;
         foreach ($materials as $material) {
+            $course = $material->subject ? $material->subject->course : null;
+            if (!auth()->user()->isAdmin() && (!$course || $course->instructor_id !== auth()->id())) {
+                continue; // Skip if user is not admin and not the course instructor
+            }
+
             // Delete file from storage
             if (Storage::disk('public')->exists($material->file_path)) {
                 Storage::disk('public')->delete($material->file_path);
@@ -167,15 +224,21 @@ class CourseController extends Controller
 
             // Delete material from database
             $material->delete();
+            $deletedCount++;
         }
 
-        return redirect()->back()->with('success', 'Selected materials deleted successfully.');
+        return redirect()->back()->with('success', "{$deletedCount} material(s) deleted successfully.");
     }
 
     // Delete a specific material
     public function deleteMaterial($id)
     {
-        $material = Material::findOrFail($id);
+        $material = Material::with('subject.course')->findOrFail($id);
+        $course = $material->subject ? $material->subject->course : null;
+
+        if (!auth()->user()->isAdmin() && (!$course || $course->instructor_id !== auth()->id())) {
+            return redirect()->back()->with('error', 'Unauthorized action.');
+        }
 
         // Check if file exists in storage before deleting
         if (Storage::disk('public')->exists($material->file_path)) {

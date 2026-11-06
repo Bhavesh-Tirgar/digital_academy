@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline – Digital Academy</title>
+    <link rel="stylesheet" href="/css/modern-academy.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: #0c0f1d;
+            color: #f8fafc;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .offline-card {
+            background: #151b2e;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px 30px;
+            max-width: 480px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        .offline-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(79, 70, 229, 0.15);
+            color: #6366f1;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        .retry-btn {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: #ffffff;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 999px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-card">
+        <div class="offline-icon">
+            <i class="fas fa-wifi-slash"></i>
+        </div>
+        <h2 style="margin: 0 0 10px 0; font-size: 1.5rem; font-weight: 700;">You are currently offline</h2>
+        <p style="color: #94a3b8; font-size: 0.95rem; line-height: 1.5; margin: 0 0 20px 0;">
+            Digital Academy requires an internet connection for live video streams and exam submissions. Downloaded PDFs, cheatsheets, and offline cache remain accessible.
+        </p>
+        <button class="retry-btn" onclick="window.location.reload()">
+            <i class="fas fa-redo"></i> Retry Connection
+        </button>
+    </div>
+</body>
+</html>
