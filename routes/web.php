@@ -108,7 +108,7 @@ Route::get('/frontend/materials/{id}/{plan?}', [MaterialController::class, 'show
 // 11. Course Progress Tracking & Verified Digital Certificates
 Route::post('/courses/{id}/progress', [CourseProgressController::class, 'updateProgress'])->name('courses.progress.update');
 Route::get('/courses/{id}/certificate', [CourseProgressController::class, 'showCertificate'])->name('courses.certificate');
-Route::get('/verify-certificate/{certId}', [CourseProgressController::class, 'verifyCertificate'])->name('certificate.verify');
+Route::get('/verify-certificate/{certId?}', [CourseProgressController::class, 'verifyCertificate'])->name('certificate.verify');
 
 // 11. Review Routes
 Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');

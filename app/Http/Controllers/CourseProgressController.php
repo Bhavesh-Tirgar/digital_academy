@@ -82,8 +82,9 @@ class CourseProgressController extends Controller
     /**
      * Public Verification of Certificate by ID.
      */
-    public function verifyCertificate($certId)
+    public function verifyCertificate($certId = null)
     {
+        $certId = $certId ?? request()->query('certId') ?? 'DA-CERT-2026-CS101';
         $shaHash = strtoupper(hash('sha256', $certId . '_digital_academy_official_ledger_2026'));
         $course = Course::with('instructor')->first();
         $studentName = Auth::check() ? Auth::user()->name : 'Verified Digital Academy Scholar';
